@@ -32,7 +32,7 @@ ld-options:
 pkgconfig-depends:
 frameworks:
 c-sources:
-extensions:
+extensions: ScopedTypeVariables
 extra-libraries:
 extra-lib-dirs:
 includes:
