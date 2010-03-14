@@ -7,6 +7,7 @@ import Data.Maybe (fromMaybe)
 import Control.Monad (forever)
 import Control.Concurrent (forkIO)
 import Control.Exception (finally)
+import System.Posix.Daemonize (daemonize)
 import Char
 
 user = "cain"
@@ -14,7 +15,7 @@ user = "cain"
 main :: IO ()
 main = withSocketsDo $ do
   s <- listenOn $ PortNumber 113
-  forever $ do
+  daemonize $ forever $ do
     (h, host, port) <- accept s
     forkIO (handleConnection h)
 
