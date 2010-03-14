@@ -3,7 +3,6 @@ module Main (main) where
 import Network
 import System.IO
 import System.Timeout
-import Data.Maybe (fromMaybe)
 import Control.Monad (forever)
 import Control.Concurrent (forkIO)
 import Control.Exception (finally)
@@ -28,4 +27,4 @@ handleConnection h = finally hndlr cleanup where
   cleanup = hClose h
   withTimeout a = do
     r <- timeout (30*(10^6)) a
-    return (fromMaybe () r)
+    return $ case r of {Nothing -> ();Just v  -> v}
