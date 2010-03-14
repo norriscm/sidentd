@@ -7,7 +7,6 @@ import Control.Monad (forever)
 import Control.Concurrent (forkIO)
 import Control.Exception (finally)
 import System.Posix.Daemonize (daemonize)
-import Char
 
 user = "cain"
 
