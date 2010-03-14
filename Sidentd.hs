@@ -6,14 +6,14 @@ import System.Timeout
 import Control.Monad (forever)
 import Control.Concurrent (forkIO)
 import Control.Exception (finally)
-import System.Posix.Daemonize (daemonize)
+--import System.Posix.Daemonize (daemonize) daemonize $
 
 user = "cain"
 
 main :: IO ()
 main = withSocketsDo $ do
   s <- listenOn $ PortNumber 113
-  daemonize $ forever $ do
+  forever $ do
     (h, host, port) <- accept s
     forkIO (handleConnection h)
 
