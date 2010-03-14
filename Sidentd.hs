@@ -28,9 +28,18 @@ handleConnection :: String -> Handle -> IO ()  -- this is the control flow of ea
 handleConnection user h = finally hndlr cleanup where
   hndlr = withTimeout $ do
     hSetBuffering h LineBuffering
-    query <- hGetLine h
+    query <- hGetLineN h 512
     hPutStrLn h ((filter isPrint query) ++ " : USERID : UNIX : " ++ user)
   cleanup = hClose h
   withTimeout a = do
     r <- timeout (30*(10^6)) a
     return $ case r of {Nothing -> ();Just v  -> v}
+
+hGetLineN :: Handle -> Int -> IO String
+hGetLineN h n = hGetLineN' h n [] where
+  hGetLineN' _ 0 a = return (reverse a)
+  hGetLineN' h n a = do
+    c <- hGetChar h
+    if c == '\n'
+      then return (reverse a)
+      else hGetLineN' h (n-1) (c:a)
