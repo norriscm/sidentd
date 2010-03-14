@@ -6,13 +6,15 @@ import System.Timeout
 import Control.Monad (forever)
 import Control.Concurrent (forkIO)
 import Control.Exception (finally)
---import System.Posix.Daemonize (daemonize) daemonize $
+import System.Posix (setGroupID, setUserID)
 
-user = "cain"
+user = "cain"   -- the static username returned for all queries
 
 main :: IO ()
 main = withSocketsDo $ do
   s <- listenOn $ PortNumber 113
+  setGroupID 1
+  setUserID 1
   forever $ do
     (h, host, port) <- accept s
     forkIO (handleConnection h)
