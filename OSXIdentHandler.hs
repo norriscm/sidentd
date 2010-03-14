@@ -1,18 +1,12 @@
 module OSXIdentHandler (handleQuery) where
 
-import System.Process (runInteractiveCommand, terminateProcess)
+import UNIXIdentHandler
+
+import System.Process (runInteractiveCommand)
 import System.IO
 
 handleQuery :: Int -> Int -> IO (String, String) -- do the lookup
-handleQuery lport fport = do
-  putStrLn (syse lport fport)
-  (_,out,_,proc) <- runInteractiveCommand (syse lport fport)
-  hSetBuffering out LineBuffering
-  name <- hGetLine out
-  hClose out
-  if (length name > 0)
-    then return ("USERID", "UNIX : " ++ name)
-    else return ("ERROR","NO USER")
+handleQuery = unixHandler syse
 
 syse :: Int -> Int -> String
 syse lport fport =
