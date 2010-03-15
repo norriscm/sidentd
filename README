@@ -16,13 +16,13 @@ A tiny static ident server in Haskell
 
 sidentd is derived from the same code as cnidentd, but only supports a simple static response strategy.  It is tiny, multithreaded, and should be quite secure.
 
-sidentd must be run as root.  Immediately after binding the port, and before listening for any connections, sidentd drops privileges to the daemon user and group.  If your system does not have daemon as uid=1,gid=1, make the appropriate changes to the program.
-
-You can configure the username returned by changing the 'user' variable above the main function.
+sidentd must be run as root.  Immediately after binding the port, and before daemonizing or listening for any connections, sidentd drops privileges to the daemon user and group.  If your system does not have daemon as uid=1,gid=1, make the appropriate changes to the program.
 
 Build with
- > ghc --make Sidentd.hs
+ > ghc --make Sidentd.hs -o sidentd
 
-The daemonize package is broken on my dev system at the moment, so I have it disabled; run the binary with 
- > nohup sudo ./Sidentd &
-This assumes that you are already auth'd to sudo.  If not, drop the & and manually background the process after authenticating.
+Run with
+ > sudo ./sident USER
+where USER is the username you want returned for queries.
+
+sidentd doesn't yet support rc.d/ style start and stop options, so just kill it the old fashioned way.
