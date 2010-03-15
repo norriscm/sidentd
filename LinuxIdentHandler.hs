@@ -1,11 +1,8 @@
-module LinuxIdentHandler (handleQuery) where
+module LinuxIdentHandler (handleQuery, handlerInit, HandlerState) where
 
 import UNIXIdentHandler
 
-import System.Process (runInteractiveCommand)
-import System.IO
-
-handleQuery :: Int -> Int -> IO (String, String) -- do the lookup
+handleQuery :: HandlerState -> Int -> Int -> IO (String, String) -- do the lookup
 handleQuery = unixHandler syse
 
 syse :: Int -> Int -> String

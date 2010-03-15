@@ -15,19 +15,19 @@ import System.Posix.Daemonize (daemonize)
 import Char
 
 main :: IO ()
-main = withSocketsDo $ do
+main = handlerInit $ (\st -> withSocketsDo $ do
   s <- listenOn $ PortNumber 113
   daemonize $ forever $ do
     (h, host, port) <- accept s
-    forkIO (handleConnection h)
+    forkIO (handleConnection st h))
 
-handleConnection :: Handle -> IO ()  -- this is the control flow of each connection thread
-handleConnection h =  finally hndlr cleanup where
+handleConnection :: HandlerState -> Handle -> IO ()  -- this is the control flow of each connection thread
+handleConnection s h =  finally hndlr cleanup where
   hndlr = withTimeout $ do
     hSetBuffering h System.IO.LineBuffering
     query <- hGetLine h
     let (lport, fport) = parseQuery query
-    (resptype, addinfo) <- handleQuery lport fport
+    (resptype, addinfo) <- handleQuery s lport fport
     let resp = concat [show lport, ", ", show fport, " : ", resptype, " : ", addinfo, "\r\n"]
     hPutStr h resp
   cleanup = do
