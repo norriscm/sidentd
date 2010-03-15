@@ -7,7 +7,7 @@ sidentd is derived from the same code as cnidentd, but only supports a simple st
 sidentd must be run as root.  Immediately after binding the port, and before daemonizing or listening for any connections, sidentd drops privileges to the daemon user and group.  If your system does not have daemon as uid=1,gid=1, make the appropriate changes to the program.
 
 Build with
- > ghc --make Sidentd.hs -o sidentd
+ > ghc Sidentd.hs -o sidentd
 
 Run with
  > sudo ./sident USER
