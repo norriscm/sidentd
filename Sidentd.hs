@@ -4,7 +4,7 @@ import Network
 import System.IO
 import System.Timeout
 import System (getArgs, exitFailure)
-import Control.Monad (forever)
+import Control.Monad (forever, liftM, replicateM)
 import Control.Concurrent (forkIO)
 import Control.Exception (finally)
 import System.Posix (setGroupID, setUserID)
@@ -36,10 +36,4 @@ handleConnection user h = finally hndlr cleanup where
     return $ case r of {Nothing -> ();Just v  -> v}
 
 hGetLineN :: Handle -> Int -> IO String
-hGetLineN h n = hGetLineN' h n [] where
-  hGetLineN' _ 0 a = return (reverse a)
-  hGetLineN' h n a = do
-    c <- hGetChar h
-    if c == '\n'
-      then return (reverse a)
-      else hGetLineN' h (n-1) (c:a)
+hGetLineN h n = liftM (takeWhile (/= '\n')) $ replicateM n (hGetChar h)
