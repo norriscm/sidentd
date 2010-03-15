@@ -1,15 +1,3 @@
-cnidentd
-========
-A small, simple ident server in Haskell
-
-cnidentd is a small ident server written in Haskell.  It is modular, multithreaded, and RFC 1413 compliant.
-
-cnidentd supports modular ident providers, supporting multiple strategies (and platforms) for supplying ident information.  A simple, single-static-user provider is included, as well as fully-functioning providers for OS X and Linux.  The providers for OS X and Linux spawn a subprocess to actually figure out the user associated with a connection, and read back in the value.  On Linux this may be brittle due to lack of testing with various distributions' lsof versions.
-
-cnidentd must currently be run as root.  On OS X, privilege dropping should be simple.  On Linux, lsof needs root to access other users' connections, so privilege dropping may not be feasible.
-
-The build is cabalized.
-
 sidentd
 =======
 A tiny static ident server in Haskell
